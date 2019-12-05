@@ -24,6 +24,12 @@ namespace DAB3_Assignment.Controllers
             return View(users);
         }
 
+        public IActionResult Wall(string ID)
+        {
+            var user = _userService.Get(ID);
+            return View(user);
+        }
+
         [HttpGet("{id:length(24)}", Name = "GetUser")]
         public ActionResult<User> Get(string id)
         {

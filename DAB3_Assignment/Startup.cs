@@ -35,6 +35,7 @@ namespace DAB3_Assignment
                 sp.GetRequiredService<IOptions<SocialNetworkDatabaseSettings>>().Value);
 
             services.AddSingleton<UserService>();
+            services.AddSingleton<UpdateService>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

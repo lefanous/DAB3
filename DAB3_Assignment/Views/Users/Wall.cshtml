@@ -1,0 +1,47 @@
+﻿@model DAB3_Assignment.Models.User
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Age)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Followers)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Followers.Count) <br />
+            @foreach (var follower in Model.Followers)
+            {
+                @Html.ActionLink(follower.Name, "Wall", new { id = @follower.ID }) <br />
+            }
+        </dd>
+
+        <dt>
+            Blocked
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BlockedList.Count) <br />
+            @foreach (var blocked in Model.BlockedList)
+            {
+                @Html.ActionLink(blocked.Name, "Wall", new { id = @blocked.ID }) <br />
+            }
+        </dd>
+    </dl>
+</div>

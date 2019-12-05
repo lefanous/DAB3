@@ -12,11 +12,21 @@ namespace DAB3_Assignment.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string ID { get; set; }
+        
         [BsonElement("name")]
         public string Name { get; set; }
+        
         [BsonElement("gender")]
         public string Gender { get; set; }
+        
         [BsonElement("age")]
         public int Age { get; set; }
+
+        [BsonElement("followers")]
+        public List<UserReference> Followers { get; set; }
+
+        [BsonElement("blocked")]
+        public List<UserReference> BlockedList { get; set; }
+
     }
 }
