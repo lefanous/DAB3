@@ -1,33 +1,12 @@
 ﻿@model IEnumerable<DAB3_Assignment.Models.Update>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Author)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                Post created
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.ActionLink(item.Author.Name, "Wall", "Users", new { id = item.Author.ID })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationTime)
-            </td>
-        </tr>
+<h2>Updates</h2>
+
+@foreach (var update in Model)
+{
+    <hr />
+    <h3>@Html.ActionLink(update.Author.Name, "Wall", "Users", new { id = update.Author.ID })</h3>
+    <p>@update.CreationTime</p>
+    <h4>@update.Content</h4>
+    <hr />
 }
-    </tbody>
-</table>

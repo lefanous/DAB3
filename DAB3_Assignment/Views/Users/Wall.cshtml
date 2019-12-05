@@ -1,47 +1,52 @@
 ﻿@model DAB3_Assignment.Models.User
 
 <div>
-    <h4>User</h4>
+    <h2>@Model.Name (@Model.Age years)</h2>
+
+    @if (Model.Gender == "Male")
+    {
+        <img src="https://www.winchcombe.co.uk/wp-content/uploads/2017/04/male-silhouette.png" width="200" />
+    }
+    else
+    {
+        <img src="https://printinnovationssummit.co.uk/wp-content/uploads/2019/05/female-silhouette.jpg" width="200" />
+    }
+</div>
+<div class="row">
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Age)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Followers)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Followers.Count) <br />
+    <div class="col-md-4">
+        <h4>Followers (@Model.Followers.Count)</h4>
+
+        <ul>
             @foreach (var follower in Model.Followers)
             {
-                @Html.ActionLink(follower.Name, "Wall", new { id = @follower.ID }) <br />
+                <li>@Html.ActionLink(follower.Name, "Wall", new { id = @follower.ID })</li>
             }
-        </dd>
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <h4>Following (0)</h4>
+    </div>
+    <div class="col-md-4">
+        <h4>Blocked (@Model.BlockedList.Count)</h4>
 
-        <dt>
-            Blocked
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.BlockedList.Count) <br />
+        <ul>
             @foreach (var blocked in Model.BlockedList)
             {
-                @Html.ActionLink(blocked.Name, "Wall", new { id = @blocked.ID }) <br />
+                <li>@Html.ActionLink(blocked.Name, "Wall", new { id = blocked.ID })</li>
             }
-        </dd>
-    </dl>
+        </ul>
+    </div>
+</div>
+<div>
+    <hr />
+    <h3>Updates (@Model.Updates.Count)</h3>
+
+    @foreach (var update in Model.Updates)
+    {
+        <hr />
+        <h4>@update.Content</h4>
+        <p>@update.CreationTime</p>
+        <hr />
+    }
 </div>

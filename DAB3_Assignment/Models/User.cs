@@ -28,5 +28,7 @@ namespace DAB3_Assignment.Models
         [BsonElement("blocked")]
         public List<UserReference> BlockedList { get; set; }
 
+        public List<Update> Updates { get; set; }
+
     }
 }
