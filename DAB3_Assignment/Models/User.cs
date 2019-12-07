@@ -30,6 +30,7 @@ namespace DAB3_Assignment.Models
         public List<UserReference> BlockedList { get; set; }
 
         public List<Update> Updates { get; set; }
+
         [BsonElement("circles")]
         public List<string> Circles { get; set; }
 

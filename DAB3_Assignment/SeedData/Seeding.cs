@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 namespace DAB3_Assignment.SeedData
 {
 
-public class Seeding
+    public class Seeding
     {
         private readonly IMongoCollection<User> _user;
         private readonly IMongoCollection<Circle> _circle;
@@ -61,18 +61,94 @@ public class Seeding
                     Followers = new List<UserReference>(),
                     BlockedList = new List<UserReference>(),
                     Circles = new List<string>()
+                },
+                new User
+                {
+                    Name = "Ali Kais",
+                    Age = 21,
+                    Gender = "Male",
+                    Followers = new List<UserReference>(),
+                    BlockedList = new List<UserReference>(),
+                    Circles = new List<string>()
+                },
+                new User
+                {
+                    Name = "Jose Aldo",
+                    Age = 33,
+                    Gender = "Male",
+                    Followers = new List<UserReference>(),
+                    BlockedList = new List<UserReference>(),
+                    Circles = new List<string>()
+                },
+                new User
+                {
+                    Name = "Daniel Day Lewis",
+                    Age = 62,
+                    Gender = "Male",
+                    Followers = new List<UserReference>(),
+                    BlockedList = new List<UserReference>(),
+                    Circles = new List<string>()
+                },
+                new User
+                {
+                    Name = "Chantel Jeffries",
+                    Age = 27,
+                    Gender = "Female",
+                    Followers = new List<UserReference>(),
+                    BlockedList = new List<UserReference>(),
+                    Circles = new List<string>()
+                },
+                new User
+                {
+                    Name = "Emily Ratajkowski",
+                    Age = 28,
+                    Gender = "Female",
+                    Followers = new List<UserReference>(),
+                    BlockedList = new List<UserReference>(),
+                    Circles = new List<string>()
                 }
+
             };
-            var filter = Builders<User>.Filter.Empty;
-            var result = users.DeleteMany(filter);
+            var deleteusers = Builders<User>.Filter.Empty;
+            var resultdlu = users.DeleteMany(deleteusers);
+
             await users.InsertManyAsync(userlist);
 
-            var SakaFollowers = new List<UserReference> { new UserReference { ID = userlist[1].ID, Name = userlist[1].Name }, new UserReference { ID = userlist[2].ID, Name = userlist[2].Name }
-        };
+            var SakaFollowers = new List<UserReference>
+            {
+                new UserReference
+                {
+                    ID = userlist[1].ID, Name = userlist[1].Name
+                },
+                new UserReference
+                {
+                    ID = userlist[2].ID, Name = userlist[2].Name
+                },
+                new UserReference
+                {
+                    ID = userlist[3].ID, Name = userlist[3].Name
+                },
+                new UserReference
+                {
+                    ID = userlist[4].ID, Name = userlist[4].Name
+                },
+                new UserReference
+                {
+                    ID = userlist[5].ID, Name = userlist[5].Name
+                },
+                new UserReference
+                {
+                    ID = userlist[6].ID, Name = userlist[6].Name
+                },
+                new UserReference
+                {
+                    ID = userlist[7].ID, Name = userlist[7].Name
+                }
 
-            var filter1 = Builders<User>.Filter.Eq("Name", "Sakariye Mahamed Ali");
-            var update = Builders<User>.Update.Set("Followers", SakaFollowers);
-            await users.UpdateOneAsync(filter1, update);
+            };
+            var sakafilter = Builders<User>.Filter.Eq("ID", userlist[0].ID);
+            var updatesf = Builders<User>.Update.Set("Followers", SakaFollowers);
+            await users.UpdateOneAsync(sakafilter, updatesf);
 
             var circlelist = new List<Circle>
             {
@@ -80,24 +156,20 @@ public class Seeding
                 {
                     Name = "Venner",
                     Users = new List<string>()
-
                 },
 
                 new Circle
                 {
                     Name = "Familie",
                     Users = new List<string>()
-
                 },
 
                 new Circle
                 {
                     Name = "Skole",
                     Users = new List<string>()
-
                 }
             };
-
             var deletecircles = Builders<Circle>.Filter.Empty;
             var resultdlc = circle.DeleteMany(deletecircles);
 
@@ -109,7 +181,15 @@ public class Seeding
             var update2 = Builders<Circle>.Update.Set("Users", circleven);
             await circle.UpdateOneAsync(filter2, update2);
 
+            var circlevenner = new List<string> { "Venner" };
 
+            var sakacircle = Builders<User>.Filter.Eq("ID", userlist[1].ID);
+            var updatesc = Builders<User>.Update.Set("Circles", circlevenner);
+            await users.UpdateOneAsync(sakacircle, updatesc);
+
+            var abdacircle = Builders<User>.Filter.Eq("ID", userlist[0].ID);
+            var updateac = Builders<User>.Update.Set("Circles", circlevenner);
+            await users.UpdateOneAsync(sakacircle, updatesc);
         }
     }
 }

@@ -21,7 +21,7 @@
                     @Html.ActionLink(item.Name, "Wall", new { name = item.Name })
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Users)
+                    @Html.DisplayFor(modelItem => item.Users.Count)
                 </td>
             </tr>
         }
