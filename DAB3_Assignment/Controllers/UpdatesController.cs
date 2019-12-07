@@ -21,6 +21,7 @@ namespace DAB3_Assignment.Controllers
         public ActionResult<List<Update>> Feed()
         {
             var updates = _updateService.Get();
+            updates.Sort((y, x) => x.CreationTime.CompareTo(y.CreationTime));
             return View(updates);
         }
     }

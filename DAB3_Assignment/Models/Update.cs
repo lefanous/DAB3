@@ -11,14 +11,18 @@ namespace DAB3_Assignment.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string ID { get; set; }
 
         [BsonElement("author")]
         public UserReference Author { get; set; }
+
         [BsonElement("posttype")]
         public string PostType { get; set; }
+
         [BsonElement("content")]
         public string Content { get; set; }
-        [BsonElement("creationtime")] public DateTime CreationTime { get; set; }
+
+        [BsonElement("creationtime")]
+        public DateTime CreationTime { get; set; }
     }
 }

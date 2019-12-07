@@ -21,5 +21,8 @@ namespace DAB3_Assignment.Services
 
         public List<Update> Get() =>    
             _updates.Find(update => true).ToList();
+
+        public List<Update> Get(string id) =>
+            _updates.Find<Update>(update => update.Author.ID == id).ToList();
     }
 }

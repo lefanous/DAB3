@@ -12,10 +12,12 @@ namespace DAB3_Assignment.Controllers
     public class UsersController : Controller
     {
         private readonly UserService _userService;
+        private readonly UpdateService _updateService;
 
-        public UsersController(UserService userService)
+        public UsersController(UserService userService, UpdateService updateService)
         {
             _userService = userService;
+            _updateService = updateService;
         }
 
         [HttpGet]
@@ -27,7 +29,9 @@ namespace DAB3_Assignment.Controllers
 
         public IActionResult Wall(string ID)
         {
-            var user = _userService.Get(ID);
+            User user = _userService.Get(ID);
+            user.Updates = _updateService.Get(ID);
+            user.Updates.Sort((y, x) => x.CreationTime.CompareTo(y.CreationTime));
             return View(user);
         }
 
