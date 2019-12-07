@@ -13,21 +13,31 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using DAB3_Assignment.SeedData;
 
 namespace DAB3_Assignment
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+        public Seeding seeduser;
+        //public SeedCircle seedcircle;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            seeduser = new Seeding(Configuration);
+            //seedcircle = new SeedCircle(Configuration);
+
         }
 
-        public IConfiguration Configuration { get; }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<Seeding>();
+            //services.AddScoped<SeedCircle>();
+
             services.Configure<SocialNetworkDatabaseSettings>(
                 Configuration.GetSection(nameof(SocialNetworkDatabaseSettings)));
 
@@ -36,6 +46,7 @@ namespace DAB3_Assignment
 
             services.AddSingleton<UserService>();
             services.AddSingleton<UpdateService>();
+            services.AddSingleton<CircleService>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

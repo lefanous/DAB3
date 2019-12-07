@@ -1,10 +1,11 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DAB3_Assignment.Models;
 using DAB3_Assignment.Services;
 using Microsoft.AspNetCore.Mvc;
+using DAB3_Assignment.SeedData;
 
 namespace DAB3_Assignment.Controllers
 {

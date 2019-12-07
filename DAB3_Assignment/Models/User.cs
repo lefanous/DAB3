@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace DAB3_Assignment.Models
 {
     public class User
@@ -27,6 +28,9 @@ namespace DAB3_Assignment.Models
 
         [BsonElement("blocked")]
         public List<UserReference> BlockedList { get; set; }
+
+        [BsonElement("circles")]
+        public List<string> Circles { get; set; }
 
     }
 }
