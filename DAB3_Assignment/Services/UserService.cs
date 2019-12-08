@@ -31,6 +31,26 @@ namespace DAB3_Assignment.Services
             return user;
         }
 
+        public async void AddFollower(User _user, User _visitor)
+        {         
+            var filter = Builders<User>.Filter.Eq("ID", _user.ID);
+            var visitorRef = new UserReference { ID = _visitor.ID, Name = _visitor.Name };
+            var UpdatedFollowers = _user.Followers;
+            UpdatedFollowers.Add(visitorRef);
+            var update = Builders<User>.Update.Set("Followers", UpdatedFollowers);
+            await _users.UpdateOneAsync(filter, update);
+        }
+
+        public async void Block(User _user, User _visitor)
+        {
+            var filter = Builders<User>.Filter.Eq("ID", _user.ID);
+            var visitorRef = new UserReference { ID = _visitor.ID, Name = _visitor.Name };
+            var UpdatedBlockedList = _user.BlockedList;
+            UpdatedBlockedList.Add(visitorRef);
+            var update = Builders<User>.Update.Set("BlockedList", UpdatedBlockedList);
+            await _users.UpdateOneAsync(filter, update);
+        }
+
         public void Update(string id, User userIn) =>
             _users.ReplaceOne(user => user.ID == id, userIn);
 

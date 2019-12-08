@@ -1,0 +1,32 @@
+﻿@model IEnumerable<DAB3_Assignment.Models.User>
+
+<div class="row" style="margin-top: 15px;">
+    <div class="col-md-6">
+        <h4>You are visiting:</h4>
+        <h2>@Model.ElementAt(0).Name (@Model.ElementAt(0).Age years)</h2>
+
+        @if (@Model.ElementAt(0).Gender == "Male")
+        {
+            <img src="https://www.winchcombe.co.uk/wp-content/uploads/2017/04/male-silhouette.png" width="200" />
+        }
+        else
+        {
+            <img src="https://printinnovationssummit.co.uk/wp-content/uploads/2019/05/female-silhouette.jpg" width="200" />
+        }
+    </div>
+    <div class="col-md-6">
+        <h4>Visit as:</h4>
+
+        @using (Html.BeginForm("Wall", "Users", FormMethod.Post))
+        {
+            <input name="ID" class="form-control" style="margin-bottom: 10px; display: none" value="@Model.ElementAt(0).ID"/>
+            <select name="VisitorID"  style="margin-bottom: 10px;" class="form-control">
+                @for (int i = 1; i < Model.Count(); i++)
+                {
+                    <option value="@Model.ElementAt(i).ID">@Model.ElementAt(i).Name</option>
+                }
+            </select>
+            <input type="submit" class="btn btn-default" value="Visit profile wall" />
+        }
+    </div>
+</div>

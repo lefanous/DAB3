@@ -27,12 +27,53 @@ namespace DAB3_Assignment.Controllers
             return View(users);
         }
 
-        public IActionResult Wall(string ID)
+        public IActionResult VisitWall(string ID)
         {
             User user = _userService.Get(ID);
+            List<User> users = _userService.Get();
+
+            users.Insert(0, user);
+
+            return View(users);
+        }
+
+        public IActionResult Wall(string ID, string VisitorID)
+        {
+            User user = _userService.Get(ID);
+            User visitor = _userService.Get(VisitorID);
+
             user.Updates = _updateService.Get(ID);
             user.Updates.Sort((y, x) => x.CreationTime.CompareTo(y.CreationTime));
-            return View(user);
+
+            List<User> users = new List<User>
+            {
+                user,
+                visitor
+            };
+
+            return View(users);
+        }
+
+        public IActionResult Follow(string ID, string VisitorID)
+        {
+            var user = _userService.Get(ID);
+            var visitor = _userService.Get(VisitorID);
+
+            _userService.AddFollower(user, visitor);            
+
+            return RedirectToAction("Wall", new { ID, VisitorID });
+        }
+
+        public IActionResult Block(string ID, string VisitorID)
+        {
+            var user = _userService.Get(ID);
+            var visitor = _userService.Get(VisitorID);
+
+            // The block goes both ways!
+            _userService.Block(user, visitor);
+            _userService.Block(visitor, user);
+
+            return RedirectToAction("Wall", new { ID, VisitorID });
         }
 
         [HttpGet("{id:length(24)}", Name = "GetUser")]

@@ -1,72 +1,142 @@
-﻿@model DAB3_Assignment.Models.User
+﻿@model IEnumerable<DAB3_Assignment.Models.User>
 
-<div>
-    <h2>@Model.Name (@Model.Age years)</h2>
+    <script>
+    window.onload = function () {
+        checkVisibility();
+    };
 
-    @if (Model.Gender == "Male")
-    {
-        <img src="https://www.winchcombe.co.uk/wp-content/uploads/2017/04/male-silhouette.png" width="200" />
+    function checkVisibility() {
+        @if (Model.ElementAt(0).BlockedList.Count > 0)
+        {
+            for (var i = 0; i < @Model.ElementAt(0).BlockedList.Count(); i++) {
+                if (@Model.ElementAt(0).BlockedList.ElementAt(i).Name == Model.ElementAt(1).Name) {
+                    <text>document.getElementById("wallContent").style.filter = "blur(5px)";</text>
+                    <text>document.getElementById("blocked").style.display = "block";</text>
+
+                }
+        }
     }
-    else
-    {
-        <img src="https://printinnovationssummit.co.uk/wp-content/uploads/2019/05/female-silhouette.jpg" width="200" />
-    }
-</div>
-<div class="row">
-    <hr />
-    <div class="col-md-4">
-        <h4>Followers (@Model.Followers.Count)</h4>
 
-        <ul>
-            @foreach (var follower in Model.Followers)
+};
+    </script>
+
+
+<h4>Visiting as: @Model.ElementAt(1).Name</h4>
+<h4 id="blocked" style="display: none;">Ooops... Looks like someone blocked you.</h4>
+
+<div id="wallContent">
+    <div class="row" onload="checkVisibility()">
+        <div class="col-md-6">
+            <h2>@Model.ElementAt(0).Name (@Model.ElementAt(0).Age years)</h2>
+
+            @if (Model.ElementAt(0).Gender == "Male")
             {
-                <li>@Html.ActionLink(follower.Name, "Wall", new { id = @follower.ID })</li>
+                <img src="https://www.winchcombe.co.uk/wp-content/uploads/2017/04/male-silhouette.png" width="200" />
             }
-        </ul>
-    </div>
-    <div class="col-md-4">
-        <h4>Following (0)</h4>
-    </div>
-    <div class="col-md-4">
-        <h4>Blocked (@Model.BlockedList.Count)</h4>
-
-        <ul>
-            @foreach (var blocked in Model.BlockedList)
+            else
             {
-                <li>@Html.ActionLink(blocked.Name, "Wall", new { id = blocked.ID })</li>
+                <img src="https://printinnovationssummit.co.uk/wp-content/uploads/2019/05/female-silhouette.jpg" width="200" />
             }
-        </ul>
-    </div>
-</div>
-<div>
-    <hr />
-    <h3>Updates (@Model.Updates.Count)</h3>
-
-    @foreach (var update in Model.Updates)
-    {
-<div style="background-color: #E9EAED; padding: 0 0 10px 10px;">
-    <hr />
-    <h3>@Html.ActionLink(update.Author.Name, "Wall", "Users", new { id = update.Author.ID })</h3>
-    <p>@update.CreationTime</p>
-    <h4>@update.Content</h4>
-    @if (update.PostType == "Picture")
-    {
-
-        <img src="@update.Url" />
-    }
-
-    @foreach (var comment in update.Comments)
-    {
-        <div style="margin-left: 10px">
-            <hr />
-            <h5>Comment by @Html.ActionLink(comment.Author.Name, "Wall", "Users", new { id = comment.Author.ID })</h5>
-            <p>@comment.CreationTime</p>
-            <h6>@comment.Content</h6>
-            <hr />
         </div>
-    }
-
-</div>
+        <div class="col-md-6">
+            <div style="margin-top: 20px">
+                @if (Model.ElementAt(0).Followers.Count == 0)
+                {
+                    @Html.ActionLink("Follow", "Follow", new { id = Model.ElementAt(0).ID, VisitorID = Model.ElementAt(1).ID }, new { @class = "btn btn-default" })
+                }
+                else
+                {
+                    @foreach (var follower in Model.ElementAt(0).Followers)
+                    {
+                        if (follower.Name == Model.ElementAt(1).Name)
+                        {
+                            <p>Following!</p>
+                            break;
+                        }
+                    }
+                }
+            </div>
+            <div style="margin-top: 20px">
+                @if (Model.ElementAt(0).Name != Model.ElementAt(1).Name)
+                {
+                    if (Model.ElementAt(0).BlockedList.Count == 0)
+                    {
+                        @Html.ActionLink("Block", "Block", new { id = Model.ElementAt(0).ID, VisitorID = Model.ElementAt(1).ID }, new { @class = "btn btn-default" })
+                    }
+                    else
+                    {
+                        @foreach (var blocked in Model.ElementAt(0).BlockedList)
+                        {
+                            if (blocked.Name == Model.ElementAt(1).Name)
+                            {
+                                <p>Blocked!</p>
+                                break;
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Block", "Block", new { id = Model.ElementAt(0).ID, VisitorID = Model.ElementAt(1).ID }, new { @class = "btn btn-default" })
+                            }
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <hr />
-    }
+        <div class="col-md-4">
+            <h4>Followers (@Model.ElementAt(0).Followers.Count)</h4>
+
+            <ul>
+                @foreach (var follower in Model.ElementAt(0).Followers)
+                {
+                    <li>@Html.ActionLink(follower.Name, "Wall", new { id = @follower.ID, VisitorID = Model.ElementAt(1).ID })</li>
+                }
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h4>Blocked (@Model.ElementAt(0).BlockedList.Count)</h4>
+
+            <ul>
+                @foreach (var blocked in Model.ElementAt(0).BlockedList)
+                {
+                    <li>@Html.ActionLink(blocked.Name, "Wall", new { id = blocked.ID, VisitorID = Model.ElementAt(1).ID })</li>
+                }
+            </ul>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+    <div>
+        <hr />
+        <h3>Updates (@Model.ElementAt(0).Updates.Count)</h3>
+
+        @foreach (var update in Model.ElementAt(0).Updates)
+        {
+            <div style="background-color: #E9EAED; padding: 0 0 10px 10px;">
+                <hr />
+                <h3>@Html.ActionLink(update.Author.Name, "Wall", "Users", new { id = update.Author.ID })</h3>
+                <p>@update.CreationTime</p>
+                <h4>@update.Content</h4>
+                @if (update.PostType == "Picture")
+                {
+
+                    <img src="@update.Url" />
+                }
+
+                @foreach (var comment in update.Comments)
+                {
+                    <div style="margin-left: 10px">
+                        <hr />
+                        <h5>Comment by @Html.ActionLink(comment.Author.Name, "Wall", "Users", new { id = comment.Author.ID })</h5>
+                        <p>@comment.CreationTime</p>
+                        <h6>@comment.Content</h6>
+                        <hr />
+                    </div>
+                }
+
+            </div>
+            <hr />
+        }
+    </div>
 </div>

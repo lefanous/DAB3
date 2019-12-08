@@ -3,27 +3,30 @@
 }
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>View</h2>
+    <div class="col-md-6">
+        <h2>How to test YaDizni Social Network</h2>
         <ul>
-            <li><a asp-controller="Users" asp-action="Index">All users</a></li>
-            <li><a asp-controller="Updates" asp-action="Feed">Updates feed</a></li>
-            <li><a asp-controller="Circles" asp-action="Index"> Circles</a></li>
-            <li>User wall</li>
+            <li>See a feed of all public updates</li>
+            <li>See the full list of users</li>
+            <li>Choose to visit as other user or the same user</li>
+            <li>If you choose other user</li>
+                <ul>
+                    <li>Posts and visiblity will be filtered by privacy and circles</li>
+                    <li>You can add comments to already existing posts</li>
+                    <li>You can choose to follow/unfollow or block</li>
+                </ul>
+            <li>If you choose same user</li>
+                <ul>
+                    <li>You can create a post</li>
+                    <li>You can add comments to already existing posts</li>
+                </ul>
         </ul>
     </div>
-    <div class="col-md-4">
-        <h2>Create</h2>
+    <div class="col-md-6">
+        <h2>User list</h2>
         <ul>
-            <li>Create update</li>
-            <li>Create circle</li>
-            <li>Create blocked list</li>
-        </ul>
-    </div>
-    <div class="col-md-4">
-        <h2>Comment</h2>
-        <ul>
-            <li>Add comment to post</li>
+            <li><a asp-controller="Users" asp-action="Index">List of all users</a></li>
+            <li><a asp-controller="Updates" asp-action="Feed">Public updates feed</a></li>
         </ul>
     </div>
 </div>
