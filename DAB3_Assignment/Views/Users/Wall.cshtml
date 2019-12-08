@@ -44,9 +44,29 @@
 
     @foreach (var update in Model.Updates)
     {
-        <hr />
-        <h4>@update.Content</h4>
-        <p>@update.CreationTime</p>
+<div style="background-color: #E9EAED; padding: 0 0 10px 10px;">
+    <hr />
+    <h3>@Html.ActionLink(update.Author.Name, "Wall", "Users", new { id = update.Author.ID })</h3>
+    <p>@update.CreationTime</p>
+    <h4>@update.Content</h4>
+    @if (update.PostType == "Picture")
+    {
+
+        <img src="@update.Url" />
+    }
+
+    @foreach (var comment in update.Comments)
+    {
+        <div style="margin-left: 10px">
+            <hr />
+            <h5>Comment by @Html.ActionLink(comment.Author.Name, "Wall", "Users", new { id = comment.Author.ID })</h5>
+            <p>@comment.CreationTime</p>
+            <h6>@comment.Content</h6>
+            <hr />
+        </div>
+    }
+
+</div>
         <hr />
     }
 </div>

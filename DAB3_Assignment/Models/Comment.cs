@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAB3_Assignment.Models
 {
-    public class Update
+    public class Comment
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -16,19 +16,10 @@ namespace DAB3_Assignment.Models
         [BsonElement("author")]
         public UserReference Author { get; set; }
 
-        [BsonElement("posttype")]
-        public string PostType { get; set; }
-
-        [BsonElement("url")]
-        public string Url { get; set; }
-
         [BsonElement("content")]
         public string Content { get; set; }
 
         [BsonElement("creationtime")]
         public DateTime CreationTime { get; set; }
-
-        [BsonElement("comments")]
-        public List<Comment> Comments { get; set; }
     }
 }

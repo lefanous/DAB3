@@ -1,4 +1,12 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿var postType = document.getElementById("postTypeField").value;
 
-// Write your JavaScript code.
+function HandlePostTypes() {
+    postType = document.getElementById("postTypeField").value;
+
+    if (postType == "Picture") {
+        document.getElementById("urlField").style.display = "block";
+    }
+    else {
+        document.getElementById("urlField").style.display = "none";
+    }
+}
