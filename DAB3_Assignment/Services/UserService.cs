@@ -1,4 +1,5 @@
 ﻿using DAB3_Assignment.Models;
+using DAB3_Assignment.Controllers;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,15 @@ namespace DAB3_Assignment.Services
             UpdatedBlockedList.Add(visitorRef);
             var update = Builders<User>.Update.Set("BlockedList", UpdatedBlockedList);
             await _users.UpdateOneAsync(filter, update);
+        }
+        public async void NewUpdate(Update updates)
+        {
+            var list = new List<Update> { updates };
+
+            var filter = Builders<User>.Filter.Eq("ID", updates.Author.ID);
+            var update = Builders<User>.Update.Set("Updates", list);
+            await _users.UpdateOneAsync(filter, update);
+
         }
 
         public void Update(string id, User userIn) =>

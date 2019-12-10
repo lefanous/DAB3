@@ -21,5 +21,8 @@ namespace DAB3_Assignment.Models
 
         [BsonElement("creationtime")]
         public DateTime CreationTime { get; set; }
+
+        [BsonElement("updateID")]
+        public string UpdateID { get; set; }
     }
 }

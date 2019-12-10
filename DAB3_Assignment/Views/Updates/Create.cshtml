@@ -4,7 +4,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" asp-controller="Updates">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Author.ID" class="control-label">Posting as Abdallah Ajjawi </label>
@@ -23,7 +23,7 @@
             <div class="form-group" id="urlField" style="display: none;">
                 <label asp-for="Url" class="control-label">A link to your picture</label>
                 <input asp-for="Url" class="form-control" />
-                <span asp-validation-for="Url" class="text-danger"></span>
+                <span asp-validation-for="Url" class="text-danger" value=""></span>
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label">What is on your mind?</label>
@@ -31,8 +31,18 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input asp-for="CreationTime" class="form-control" value="@DateTime.Now" readonly />
-                <span asp-validation-for="CreationTime" class="text-danger"></span>
+                <input asp-for="CreationTime" class="form-control" value="@DateTime.Now" />
+                <span asp-validation-for="CreationTime" class=""></span>
+            </div>
+            <div class="form-group">
+
+                <input asp-for="Comments" type="hidden" class="form-control" value=""/>
+
+            </div>
+            <div class="form-group">
+                <Label asp-for="Circles" class="control-label">Which circle should it be posted to? </Label>
+                <input asp-for="Circles" class="form-control" />
+                <span asp-validation-for="Circles" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Post update" class="btn btn-default" />

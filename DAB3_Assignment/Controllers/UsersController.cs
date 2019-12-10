@@ -42,8 +42,8 @@ namespace DAB3_Assignment.Controllers
             User user = _userService.Get(ID);
             User visitor = _userService.Get(VisitorID);
 
-            user.Updates = _updateService.Get(ID);
-            user.Updates.Sort((y, x) => x.CreationTime.CompareTo(y.CreationTime));
+            //user.Updates = _updateService.Get(ID);
+            //user.Updates.Sort((y, x) => x.CreationTime.CompareTo(y.CreationTime));
 
             List<User> users = new List<User>
             {
@@ -76,15 +76,15 @@ namespace DAB3_Assignment.Controllers
             return RedirectToAction("Wall", new { ID, VisitorID });
         }
 
+        public IActionResult NewUpdate()
+        {
+            return View("~/Views/Updates/Create.cshtml");
+        }
+
         [HttpGet("{id:length(24)}", Name = "GetUser")]
-        public ActionResult<User> Get(string id)
+        public User Get(string id)
         {
             var user = _userService.Get(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
 
             return user;
         }

@@ -30,5 +30,8 @@ namespace DAB3_Assignment.Models
 
         [BsonElement("comments")]
         public List<Comment> Comments { get; set; }
+
+        [BsonElement("circles")]
+        public string Circles { get; set; }
     }
 }

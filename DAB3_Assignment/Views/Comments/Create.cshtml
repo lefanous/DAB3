@@ -1,0 +1,38 @@
+﻿@model DAB3_Assignment.Models.Comment
+
+<h4>Comment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-controller="Comments">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Author.ID" class="control-label">Posting as Abdallah Ajjawi </label>
+                <input asp-for="Author.ID" class="form-control" value="5de8f0b21defc205e0d5a78e" />
+            </div>
+            <input asp-for="Author.Name" class="form-control" value="Abdallah Ajjawi" />
+            <div class="form-group">
+                <label asp-for="Content" class="control-label">What is on your mind?</label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="CreationTime" class="form-control" value="@DateTime.Now" />
+                <span asp-validation-for="CreationTime" class=""></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateID" class="control-label">What is ID of the post this belongs to?</label>
+                <input asp-for="UpdateID" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Post comment" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

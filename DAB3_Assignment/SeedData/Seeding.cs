@@ -14,6 +14,8 @@ namespace DAB3_Assignment.SeedData
     {
         private readonly IMongoCollection<User> _user;
         private readonly IMongoCollection<Circle> _circle;
+        private readonly IMongoCollection<Update> _updates;
+        private readonly IMongoCollection<Comment> _comment;
 
         public  Seeding(IConfiguration config)
         {
@@ -22,15 +24,17 @@ namespace DAB3_Assignment.SeedData
             var database = db.GetDatabase("SocialNetwork");
             _user = database.GetCollection<User>("Users");
             _circle = database.GetCollection<Circle>("Circles");
-            
-            Seed(_user, _circle);          
+            _updates = database.GetCollection<Update>("Updates");
+            _comment = database.GetCollection<Comment>("Comments");
+
+            Seed(_user, _circle, _updates, _comment);          
         }
         public List<User> GetUsers()
         {
             return _user.Find(user => true).ToList();
         }
 
-        static async void Seed(IMongoCollection<User> users, IMongoCollection<Circle> circle)
+        static async void Seed(IMongoCollection<User> users, IMongoCollection<Circle> circle, IMongoCollection<Update> update, IMongoCollection<Comment> comment)
         {
             
             var userlist = new List<User>
@@ -42,6 +46,7 @@ namespace DAB3_Assignment.SeedData
                     Gender = "Male",
                     Followers = new List<UserReference>(),
                     BlockedList = new List<UserReference>(),
+                    Updates = new List<Update>(),
                     Circles = new List<string>()
                 },
                 new User
@@ -51,6 +56,7 @@ namespace DAB3_Assignment.SeedData
                     Gender = "Male",
                     Followers = new List<UserReference>(),
                     BlockedList = new List<UserReference>(),
+                    Updates = new List<Update>(),
                     Circles = new List<string>()
                 },
                 new User
@@ -60,6 +66,7 @@ namespace DAB3_Assignment.SeedData
                     Gender = "Male",
                     Followers = new List<UserReference>(),
                     BlockedList = new List<UserReference>(),
+                    Updates = new List<Update>(),
                     Circles = new List<string>()
                 },
                 new User
@@ -69,6 +76,7 @@ namespace DAB3_Assignment.SeedData
                     Gender = "Male",
                     Followers = new List<UserReference>(),
                     BlockedList = new List<UserReference>(),
+                    Updates = new List<Update>(),
                     Circles = new List<string>()
                 },
                 new User
@@ -78,6 +86,7 @@ namespace DAB3_Assignment.SeedData
                     Gender = "Male",
                     Followers = new List<UserReference>(),
                     BlockedList = new List<UserReference>(),
+                    Updates = new List<Update>(),
                     Circles = new List<string>()
                 },
                 new User
@@ -87,6 +96,7 @@ namespace DAB3_Assignment.SeedData
                     Gender = "Male",
                     Followers = new List<UserReference>(),
                     BlockedList = new List<UserReference>(),
+                    Updates = new List<Update>(),
                     Circles = new List<string>()
                 },
                 new User
@@ -96,6 +106,7 @@ namespace DAB3_Assignment.SeedData
                     Gender = "Female",
                     Followers = new List<UserReference>(),
                     BlockedList = new List<UserReference>(),
+                    Updates = new List<Update>(),
                     Circles = new List<string>()
                 },
                 new User
@@ -105,6 +116,7 @@ namespace DAB3_Assignment.SeedData
                     Gender = "Female",
                     Followers = new List<UserReference>(),
                     BlockedList = new List<UserReference>(),
+                    Updates = new List<Update>(),
                     Circles = new List<string>()
                 }
 
@@ -146,6 +158,8 @@ namespace DAB3_Assignment.SeedData
                 }
 
             };
+
+
             var sakafilter = Builders<User>.Filter.Eq("ID", userlist[0].ID);
             var updatesf = Builders<User>.Update.Set("Followers", SakaFollowers);
             await users.UpdateOneAsync(sakafilter, updatesf);
@@ -167,6 +181,12 @@ namespace DAB3_Assignment.SeedData
                 new Circle
                 {
                     Name = "Skole",
+                    Users = new List<string>()
+                },
+
+                new Circle
+                {
+                    Name = "Public",
                     Users = new List<string>()
                 }
             };
@@ -190,6 +210,68 @@ namespace DAB3_Assignment.SeedData
             var abdacircle = Builders<User>.Filter.Eq("ID", userlist[0].ID);
             var updateac = Builders<User>.Update.Set("Circles", circlevenner);
             await users.UpdateOneAsync(sakacircle, updatesc);
+
+            var updates = new List<Update>
+            {
+                new Update
+                {
+                    Author = new UserReference{ID = userlist[0].ID, Name = userlist[0].Name},
+                    PostType = "Text",
+                    Content = "Hej",
+                    CreationTime = DateTime.Now,
+                    Comments = new List<Comment>(),
+                    Circles = "Venner"
+                },
+                new Update
+                {
+                    Author = new UserReference{ID = userlist[0].ID, Name = userlist[0].Name},
+                    PostType = "Text",
+                    Content = "Hej",
+                    CreationTime = DateTime.Now,
+                    Comments = new List<Comment>(),
+                    Circles = "Public"
+                }
+            };
+            var deletecomments = Builders<Update>.Filter.Empty;
+            var resultdcs = update.DeleteMany(deletecomments);
+
+            await update.InsertManyAsync(updates);
+
+            var sakaupdates = Builders<User>.Filter.Eq("ID", userlist[0].ID);
+            var updatesu = Builders<User>.Update.Set("Updates", updates);
+            await users.UpdateOneAsync(sakafilter, updatesu);
+
+            var comments = new List<Comment>
+            {
+                new Comment
+                {
+                    Author = new UserReference {ID = userlist[0].ID, Name = userlist[0].Name},
+                    Content = "Rad",
+                    CreationTime = DateTime.Now
+                },
+                new Comment
+                {
+                    Author = new UserReference {ID = userlist[1].ID, Name = userlist[1].Name},
+                    Content = "Not Rad",
+                    CreationTime = DateTime.Now
+                },
+                new Comment
+                {
+                    Author = new UserReference {ID = userlist[2].ID, Name = userlist[2].Name},
+                    Content = "Kinda Rad",
+                    CreationTime = DateTime.Now
+                }
+            };
+            var deletecomment = Builders<Comment>.Filter.Empty;
+            var resultdc = comment.DeleteMany(deletecomment);
+
+            await comment.InsertManyAsync(comments);
+
+            var commentupdate = Builders<Update>.Filter.Eq("ID", updates[1].ID);
+            var updatecu = Builders<Update>.Update.Set("Comments", comments);
+            await update.UpdateOneAsync(commentupdate, updatecu);
+
+
         }
     }
 }

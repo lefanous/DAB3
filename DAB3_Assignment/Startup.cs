@@ -21,12 +21,10 @@ namespace DAB3_Assignment
     {
         public IConfiguration Configuration { get; }
         public Seeding seeduser;
-        //public SeedCircle seedcircle;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
             seeduser = new Seeding(Configuration);
-            //seedcircle = new SeedCircle(Configuration);
 
         }
 
@@ -36,7 +34,6 @@ namespace DAB3_Assignment
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<Seeding>();
-            //services.AddScoped<SeedCircle>();
 
             services.Configure<SocialNetworkDatabaseSettings>(
                 Configuration.GetSection(nameof(SocialNetworkDatabaseSettings)));
@@ -47,6 +44,7 @@ namespace DAB3_Assignment
             services.AddSingleton<UserService>();
             services.AddSingleton<UpdateService>();
             services.AddSingleton<CircleService>();
+            services.AddSingleton<CommentService>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

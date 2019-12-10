@@ -5,31 +5,35 @@ using System.Threading.Tasks;
 using DAB3_Assignment.Models;
 using DAB3_Assignment.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 
 namespace DAB3_Assignment.Controllers
 {
     public class UpdatesController : Controller
     {
-        private readonly UpdateService _updateService;
+        private readonly UpdateService _updateservice;
+        private readonly UserService _userservice;
 
-        public UpdatesController(UpdateService updateService)
+        public UpdatesController(UpdateService updateService, UserService userService)
         {
-            _updateService = updateService;
+            _updateservice = updateService;
+            _userservice = userService;
         }
 
         [HttpGet]
         public ActionResult<List<Update>> Feed()
         {
-            List<Update> updates = _updateService.Get();
-            updates.Sort((y, x) => x.CreationTime.CompareTo(y.CreationTime));
+            List<Update> updates = _updateservice.Get();
+            //updates.Sort((y, x) => x.CreationTime.CompareTo(y.CreationTime));
 
-            foreach (Update update in updates)
-            {
-                update.Comments.Sort((y, x) => x.CreationTime.CompareTo(y.CreationTime));
-            }
+            //foreach (Update update in updates)
+            //{
+            //    update.Comments.Sort((y, x) => x.CreationTime.CompareTo(y.CreationTime));
+            //}
 
             return View(updates);
         }
+
 
         public IActionResult Create()
         {
@@ -40,8 +44,21 @@ namespace DAB3_Assignment.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Update update)
         {
-            _updateService.Create(update);
-            return View("../Views/Users/Wall", new { id = update.Author.ID });
+            _updateservice.Create(update);
+            //_userservice.NewUpdate(update);
+
+            return View("~/Views/Home/Contact.cshtml"/*, new { id = update.Author.ID }*/);
+        }
+        [HttpGet]
+        public ActionResult<List<Update>> Get() =>
+           _updateservice.Get();
+
+        [HttpGet("{id:length(24)}", Name = "GetUpdates")]
+        public Update Get(string id)
+        {
+            var update = _updateservice.Get(id);
+
+            return update;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<DAB3_Assignment.Models.User>
-
-    <script>
+<script>
     window.onload = function () {
         checkVisibility();
     };
@@ -18,10 +17,12 @@
     }
 
 };
-    </script>
+</script>
 
-
-<h4>Visiting as: @Model.ElementAt(1).Name</h4>
+@if (Model.ElementAt(1) != null)
+{
+    <h4>Visiting as: @Model.ElementAt(1).Name</h4>
+}
 <h4 id="blocked" style="display: none;">Ooops... Looks like someone blocked you.</h4>
 
 <div id="wallContent">
@@ -80,6 +81,7 @@
                     }
                 }
             </div>
+
         </div>
     </div>
     <div class="row">
@@ -110,6 +112,11 @@
     <div>
         <hr />
         <h3>Updates (@Model.ElementAt(0).Updates.Count)</h3>
+
+        @if (Model.ElementAt(0).Name == Model.ElementAt(1).Name)
+        {
+            @Html.ActionLink("Add update", "NewUpdate")
+        }
 
         @foreach (var update in Model.ElementAt(0).Updates)
         {

@@ -10,6 +10,7 @@ namespace DAB3_Assignment.Models
         public string UsersCollectionName { get; set; }
         public string UpdatesCollectionName { get; set; }
         public string CirclesCollectionName { get; set; }
+        public string CommentsCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
@@ -18,7 +19,7 @@ namespace DAB3_Assignment.Models
     {
         string UsersCollectionName { get; set; }
         string UpdatesCollectionName { get; set; }
-
+        string CommentsCollectionName { get; set; }
         string CirclesCollectionName { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
