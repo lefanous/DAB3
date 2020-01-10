@@ -33,7 +33,6 @@ namespace DAB3_Assignment.SeedData
         {
             return _user.Find(user => true).ToList();
         }
-
         static async void Seed(IMongoCollection<User> users, IMongoCollection<Circle> circle, IMongoCollection<Update> update, IMongoCollection<Comment> comment)
         {
             
@@ -201,15 +200,20 @@ namespace DAB3_Assignment.SeedData
             var update2 = Builders<Circle>.Update.Set("Users", circleven);
             await circle.UpdateOneAsync(filter2, update2);
 
-            var circlevenner = new List<string> { "Venner" };
+            var circlevenner = new List<string> { "Venner" , "Familie"};
+            var circlevennerogfamilie = new List<string> { "Venner", "Familie" };
 
             var sakacircle = Builders<User>.Filter.Eq("ID", userlist[1].ID);
             var updatesc = Builders<User>.Update.Set("Circles", circlevenner);
             await users.UpdateOneAsync(sakacircle, updatesc);
 
             var abdacircle = Builders<User>.Filter.Eq("ID", userlist[0].ID);
-            var updateac = Builders<User>.Update.Set("Circles", circlevenner);
-            await users.UpdateOneAsync(sakacircle, updatesc);
+            var updateac = Builders<User>.Update.Set("Circles", circlevennerogfamilie);
+            await users.UpdateOneAsync(abdacircle, updatesc);
+
+            var emilycircle = Builders<User>.Filter.Eq("ID", userlist[7].ID);
+            var updateec = Builders<User>.Update.Set("Circles", circlevennerogfamilie);
+            await users.UpdateOneAsync(emilycircle, updateec);
 
             var updates = new List<Update>
             {
@@ -232,6 +236,60 @@ namespace DAB3_Assignment.SeedData
                     Circles = "Public"
                 }
             };
+            var updates1 = new List<Update>
+            {               
+                new Update
+                {
+                    Author = new UserReference{ID = userlist[1].ID, Name = userlist[1].Name},
+                    PostType = "Text",
+                    Content = "Hej",
+                    CreationTime = DateTime.Now,
+                    Comments = new List<Comment>(),
+                    Circles = "Public"
+               },
+                new Update
+                {
+                    Author = new UserReference{ID = userlist[1].ID, Name = userlist[1].Name},
+                    PostType = "Text",
+                    Content = "Hej",
+                    CreationTime = DateTime.Now,
+                    Comments = new List<Comment>(),
+                    Circles = "Skole"
+               },
+
+            };
+
+            var updates2 = new List<Update>
+            {
+                new Update
+                {
+                    Author = new UserReference{ID = userlist[2].ID, Name = userlist[2].Name},
+                    PostType = "Text",
+                    Content = "Hej",
+                    CreationTime = DateTime.Now,
+                    Comments = new List<Comment>(),
+                    Circles = "Public"
+               },
+                new Update
+                {
+                    Author = new UserReference{ID = userlist[2].ID, Name = userlist[2].Name},
+                    PostType = "Text",
+                    Content = "Hej",
+                    CreationTime = DateTime.Now,
+                    Comments = new List<Comment>(),
+                    Circles = "Venner"
+               },
+                new Update
+                {
+                    Author = new UserReference{ID = userlist[2].ID, Name = userlist[2].Name},
+                    PostType = "Text",
+                    Content = "Hej",
+                    CreationTime = DateTime.Now,
+                    Comments = new List<Comment>(),
+                    Circles = "Familie"
+               }
+
+            };
             var deletecomments = Builders<Update>.Filter.Empty;
             var resultdcs = update.DeleteMany(deletecomments);
 
@@ -240,6 +298,17 @@ namespace DAB3_Assignment.SeedData
             var sakaupdates = Builders<User>.Filter.Eq("ID", userlist[0].ID);
             var updatesu = Builders<User>.Update.Set("Updates", updates);
             await users.UpdateOneAsync(sakafilter, updatesu);
+
+            var aaupdates = Builders<User>.Filter.Eq("ID", userlist[1].ID);
+            var updatesu1 = Builders<User>.Update.Set("Updates", updates1);
+            await users.UpdateOneAsync(aaupdates, updatesu1);
+
+            var zaupdates = Builders<User>.Filter.Eq("ID", userlist[2].ID);
+            var updatesu2 = Builders<User>.Update.Set("Updates", updates2);
+            await users.UpdateOneAsync(zaupdates, updatesu2);
+
+            await update.InsertManyAsync(updates1);
+            await update.InsertManyAsync(updates2);
 
             var comments = new List<Comment>
             {

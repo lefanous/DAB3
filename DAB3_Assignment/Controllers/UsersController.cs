@@ -36,6 +36,7 @@ namespace DAB3_Assignment.Controllers
 
             return View(users);
         }
+        
 
         public IActionResult Wall(string ID, string VisitorID)
         {

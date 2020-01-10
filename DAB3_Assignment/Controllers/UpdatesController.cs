@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DAB3_Assignment.Models;
+using DAB3_Assignment.Controllers;
 using DAB3_Assignment.Services;
+using DAB3_Assignment.SeedData;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 
@@ -20,20 +22,80 @@ namespace DAB3_Assignment.Controllers
             _userservice = userService;
         }
 
-        [HttpGet]
-        public ActionResult<List<Update>> Feed()
+        public ActionResult<List<Update>> Feed(string ID)
         {
-            List<Update> updates = _updateservice.Get();
-            //updates.Sort((y, x) => x.CreationTime.CompareTo(y.CreationTime));
+            /* Get user which feed we are looking at */
+            var user = _userservice.Get(ID);
 
-            //foreach (Update update in updates)
-            //{
-            //    update.Comments.Sort((y, x) => x.CreationTime.CompareTo(y.CreationTime));
-            //}
+            /* Get all circles that user is part of */
+            var circles = user.Circles;
+            //circles.Add("empty");            
 
-            return View(updates);
+            /* Get all updates */
+            var updates = _updateservice.Get();
+
+            /* Check updates that is visible for user through circles */
+            var feedUpdates = new List<Update>();
+            foreach (var circle in circles)
+            {
+                foreach (var update in updates)
+                {
+                    var author = _userservice.Get(update.Author.ID);
+
+
+                    if (update.Circles == circle)
+                    {
+                        if (user.BlockedList.Count == 0)
+                        {
+                            var empty = new UserReference { ID = "empty", Name = "empty" };
+                            user.BlockedList.Add(empty);
+                        }
+
+                        foreach (var blockeduser in user.BlockedList)
+                        {     
+                            if (author == null)
+                            {
+                                var person = new User { ID = "", Name = "", Age = 00, BlockedList = new List<UserReference>(), Circles = new List<string>(), Followers = new List<UserReference>(), Gender = "", Updates = new List<Update>()};
+                                author = person;
+
+                            }
+                            if (blockeduser.ID != author.ID )
+                            {
+                                feedUpdates.Add(update);
+                            }
+                            
+                        }
+                    }
+                }
+                
+
+            }
+            foreach (var update in updates)
+            {
+                var author = _userservice.Get(update.Author.ID);
+                if (update.Circles == "Public")
+                {
+                    if (user.BlockedList.Count == 0)
+                    {
+                        var empty = new UserReference { ID = "empty", Name = "empty" };
+                        user.BlockedList.Add(empty);
+                    }
+                    foreach (var blockeduser in user.BlockedList)
+                    {
+                        if (blockeduser.ID != author.ID)
+                        {
+                            feedUpdates.Add(update);
+                        }
+                    }
+                }
+            }
+            return View(feedUpdates);
         }
-
+        public IActionResult VisitFeed()
+        {
+            var users = _userservice.Get();
+            return View(users);
+        }
 
         public IActionResult Create()
         {
@@ -45,9 +107,12 @@ namespace DAB3_Assignment.Controllers
         public IActionResult Create(Update update)
         {
             _updateservice.Create(update);
-            //_userservice.NewUpdate(update);
+            var user = _userservice.Get(update.Author.ID);
+            user.Updates.Add(update);
 
-            return View("~/Views/Home/Contact.cshtml"/*, new { id = update.Author.ID }*/);
+
+
+            return View("~/Views/Home/Contact.cshtml");
         }
         [HttpGet]
         public ActionResult<List<Update>> Get() =>

@@ -1,0 +1,19 @@
+﻿@model IEnumerable<DAB3_Assignment.Models.User>
+
+<div class="row" style="margin-top: 15px;">
+    <div class="col-md-6">
+        <h4>Visit feed of:</h4>
+
+        @using (Html.BeginForm("Feed", "Updates", FormMethod.Post))
+        {
+            
+            <select name="ID" style="margin-bottom: 10px;" class="form-control">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    <option value="@Model.ElementAt(i).ID">@Model.ElementAt(i).Name</option>
+                }
+            </select>
+            <input type="submit" class="btn btn-default" value="See updates on feed for this profile" />
+        }
+    </div>
+</div>

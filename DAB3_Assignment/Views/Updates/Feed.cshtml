@@ -6,10 +6,9 @@
 {
 <div style="background-color: #E9EAED; padding: 0 0 10px 10px;">
     <hr />
-    @if (update.Circles == "Public")
-    {
-        <h3>@Html.ActionLink(update.Author.Name, "VisitWall", "Users", new { id = update.Author.ID })</h3>
+    <h3>@Html.ActionLink(update.Author.Name, "VisitWall", "Users", new { id = update.Author.ID })</h3>
     <p>@update.CreationTime</p>
+    <p>From circle @update.Circles</p>
     <h4>@update.Content</h4>
 
     @foreach (var comment in update.Comments)
@@ -21,7 +20,6 @@
             <h6>@comment.Content</h6>
             <hr />
         </div>
-    }
     }
 
 </div>
